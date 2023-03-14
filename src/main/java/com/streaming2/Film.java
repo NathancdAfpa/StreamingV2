@@ -1,5 +1,7 @@
 package com.streaming2;
 
+import javafx.beans.value.ObservableValue;
+
 import java.util.List;
 
 public class Film {
@@ -17,6 +19,10 @@ public class Film {
         this.titre = titre;
         this.dateSortie = dateSortie;
         this.listActeur = listActeur;
+    }
+
+    public Film(String titre) {
+        this.titre = titre;
     }
 
     public String getTitre() {
