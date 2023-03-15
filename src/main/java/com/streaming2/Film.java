@@ -9,6 +9,10 @@ public class Film {
     private String titre;
     private String dateSortie;
     private List<Acteur> listActeur;
+    
+    public Film(String titre) {
+        this.titre = titre;
+    }
 
     public Film(String titre, String dateSortie) {
         this.titre = titre;
@@ -20,11 +24,6 @@ public class Film {
         this.dateSortie = dateSortie;
         this.listActeur = listActeur;
     }
-
-    public Film(String titre) {
-        this.titre = titre;
-    }
-
     public String getTitre() {
         return titre;
     }

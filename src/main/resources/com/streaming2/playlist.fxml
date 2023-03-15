@@ -16,11 +16,11 @@
       </TableView>
       <TableView fx:id="tableVPlaylist" layoutX="358.0" layoutY="38.0" prefHeight="147.0" prefWidth="228.0">
         <columns>
-          <TableColumn prefWidth="235.0" text="Titre" />
+          <TableColumn fx:id="colPlaylist" prefWidth="235.0" text="Titre" />
         </columns>
       </TableView>
       <Button fx:id="btnAjouter" layoutX="358.0" layoutY="188.0" mnemonicParsing="false" onAction="#addFilmPlaylist" text="Ajouter" />
-      <Button fx:id="btnSupprimer" layoutX="358.0" layoutY="216.0" mnemonicParsing="false" text="Supprimer" />
+      <Button fx:id="btnSupprimer" layoutX="358.0" layoutY="216.0" mnemonicParsing="false" onAction="#delete" text="Supprimer" />
       <Label fx:id="btnCreate" layoutX="98.0" layoutY="30.0" text="Créer une playlist">
          <font>
             <Font size="22.0" />
