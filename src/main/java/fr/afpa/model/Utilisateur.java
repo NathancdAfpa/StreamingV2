@@ -1,4 +1,4 @@
-package com.streaming2;
+package fr.afpa.model;
 
 
 import java.util.List;

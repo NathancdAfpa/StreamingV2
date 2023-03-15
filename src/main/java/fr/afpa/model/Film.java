@@ -1,6 +1,4 @@
-package com.streaming2;
-
-import javafx.beans.value.ObservableValue;
+package fr.afpa.model;
 
 import java.util.List;
 

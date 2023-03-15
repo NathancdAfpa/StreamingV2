@@ -1,10 +1,11 @@
-package com.streaming2;
+package fr.afpa.model;
 
 public class Compte {
 
     private String type;
 
-    public Compte(String type) {
+    public Compte(String type)
+    {
         this.type = type;
     }
 

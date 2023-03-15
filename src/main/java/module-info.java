@@ -1,8 +1,13 @@
-module com.streaming2 {
+module fr.afpa {
     requires javafx.controls;
     requires javafx.fxml;
 
-
-    opens com.streaming2 to javafx.fxml;
-    exports com.streaming2;
+    opens view to javafx.fxml;
+    exports fr.afpa.controller;
+    opens fr.afpa.controller to javafx.fxml;
+    exports fr.afpa.model;
+    opens fr.afpa.model to javafx.fxml;
+    exports fr.afpa.application;
+    opens fr.afpa.application to javafx.fxml;
 }
+
