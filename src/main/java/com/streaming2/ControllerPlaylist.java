@@ -3,7 +3,6 @@ package com.streaming2;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,8 +10,6 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.scene.control.TableView;
 
-
-import java.io.File;
 import java.io.IOException;
 
 public class ControllerPlaylist {
@@ -21,39 +18,15 @@ public class ControllerPlaylist {
 
     @FXML
     private TableView<Film> tableVPlaylist;
-    private ObservableList<Film> films = FXCollections.observableArrayList();
-    private ObservableList<Film> movies = FXCollections.observableArrayList();
-
-    @FXML
-    private Button btnAjouter;
-
-    @FXML
-    private Label btnCreate;
-
-    @FXML
-    private Button btnRetour;
-
-    @FXML
-    private Button btnSupprimer;
-
-    @FXML
-    private Label labelList;
-
-    @FXML
-    private Label labelNom;
-
-    @FXML
-    private Label labelPlaylist;
-
-    @FXML
-    private Label labelPrenom;
+    private final ObservableList<Film> films = FXCollections.observableArrayList();
+    private final ObservableList<Film> movies = FXCollections.observableArrayList();
     @FXML
     private TableColumn<Film, String> colTitle = null;
     @FXML
     private TableColumn<Film, String> colPlaylist = null;
 
     @FXML
-    public void returnHome(ActionEvent envent) throws IOException {
+    public void returnHome() throws IOException {
         Stage stage = HelloApplication.stage;
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("accueil.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -62,10 +35,12 @@ public class ControllerPlaylist {
     }
 
     @FXML
-    public void addFilmPlaylist(ActionEvent event) {
+    public void addFilmPlaylist() {
         tableVPlaylist.setItems(movies);
         Film selectedFilm  = tableFilm.getSelectionModel().getSelectedItem();
-        tableVPlaylist.getItems().add(selectedFilm);
+        if (!tableVPlaylist.getItems().contains(selectedFilm)) {
+            tableVPlaylist.getItems().add(selectedFilm);
+        }
         colPlaylist.setCellValueFactory(celldata -> new SimpleStringProperty(celldata.getValue().getTitre()));
     }
 
@@ -79,7 +54,7 @@ public class ControllerPlaylist {
     }
 
     @FXML
-    public void delete(ActionEvent event) throws IOException {
+    public void delete(){
         Film selectedFilm = tableVPlaylist.getSelectionModel().getSelectedItem();
         movies.remove(selectedFilm);
     }
