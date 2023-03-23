@@ -1,6 +1,9 @@
 module fr.afpa {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
+    requires jbcrypt;
+    requires java.mail;
 
     opens view to javafx.fxml;
     exports fr.afpa.controller;

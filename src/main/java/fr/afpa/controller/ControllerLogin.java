@@ -1,30 +1,32 @@
 package fr.afpa.controller;
 
+
 import fr.afpa.application.HelloApplication;
+import fr.afpa.dao.UsersDao;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-
-
 import java.io.IOException;
+import java.sql.SQLException;
 
 //controller qui gère la vue login
 public class ControllerLogin {
+    @FXML
+    private CheckBox btnSign;
     @FXML
     private TextField tfMail;
 
     @FXML
     private TextField tfMdp;
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    UsersDao usersDao = new UsersDao();
 
-    public void login() throws IOException {
-        //créeation de l'alerte en cas d'erreur
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    public void login() throws IOException, SQLException {
+
         String mail = tfMail.getText();
         String mdp = tfMdp.getText();
 
-        //vérification de l'email avec une regex
         if (!mail.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\\.?[a-zA-Z]*$")){
             alert.setTitle("Erreur");
             alert.setHeaderText("Adresse email invalide !!!");
@@ -33,8 +35,6 @@ public class ControllerLogin {
 
             return;
         }
-
-        //vérifier si les champs mdp et mail ne sont pas vide
         if (mail.isEmpty() || mdp.isEmpty()) {
             alert.setTitle("Erreur");
             alert.setHeaderText("Champs vide");
@@ -43,12 +43,17 @@ public class ControllerLogin {
 
             return;
         }
-        //chargement de la vue playlist
-            Stage stage = HelloApplication.stage;
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/view/playlist.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            stage.setTitle("Streaming");
-            stage.setScene(scene);
+
+        usersDao.checkUser(mail, mdp);
     }
 
+    @FXML
+    private void goToSign() throws IOException {
+        if(btnSign.isSelected()){
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/view/signIn.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            HelloApplication.stage.setScene(scene);
+            HelloApplication.stage.setTitle("Inscription");
+        }
+    }
 }
