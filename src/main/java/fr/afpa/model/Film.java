@@ -22,6 +22,11 @@ public class Film {
         this.dateSortie = dateSortie;
         this.listActeur = listActeur;
     }
+
+    public Film() {
+
+    }
+
     public String getTitre() {
         return titre;
     }
