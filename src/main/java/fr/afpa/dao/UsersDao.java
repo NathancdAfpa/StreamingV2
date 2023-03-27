@@ -29,7 +29,7 @@ public class UsersDao extends Dao<Users> {
     public void newUsers(String nom,String email, String password) throws SQLException {
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        PreparedStatement statement = connection.prepareStatement("insert into users (nom, email, password) values (?,?,?)");
+        PreparedStatement statement = connection.prepareStatement("insert into users (name, email, password) values (?,?,?)");
         statement.setString(1, nom);
         statement.setString(2, email);
         statement.setString(3, hashedPassword);

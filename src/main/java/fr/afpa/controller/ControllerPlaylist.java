@@ -1,5 +1,7 @@
 package fr.afpa.controller;
 
+import fr.afpa.dao.Dao;
+import fr.afpa.dao.MoviesDao;
 import fr.afpa.model.Film;
 import fr.afpa.application.HelloApplication;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,6 +29,9 @@ public class ControllerPlaylist {
     private TableColumn<Film, String> colTitle = null;
     @FXML
     private TableColumn<Film, String> colPlaylist = null;
+    @FXML
+    private Button btnAddMoviesBdd;
+    MoviesDao moviesDao = new MoviesDao();
 
     // création de la methode pour aller a la page d'accueil
     @FXML
@@ -35,6 +40,14 @@ public class ControllerPlaylist {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/view/accueil.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Streaming");
+        stage.setScene(scene);
+    }
+    @FXML
+    public void goToFormAdd() throws IOException {
+        Stage stage = HelloApplication.stage;
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/view/ajoutFilm.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Add movies");
         stage.setScene(scene);
     }
 
@@ -47,6 +60,7 @@ public class ControllerPlaylist {
         //si un film est déja dans le tableau, ne pas le rajoutait
         if (!tableVPlaylist.getItems().contains(selectedFilm)) {
             tableVPlaylist.getItems().add(selectedFilm);
+            System.out.println(selectedFilm.getId());
         }
         colPlaylist.setCellValueFactory(celldata -> new SimpleStringProperty(celldata.getValue().getTitre()));
     }
@@ -54,10 +68,8 @@ public class ControllerPlaylist {
     //afficher des film au lancement de la vue
     @FXML
     public void initialize() {
+        films.addAll(moviesDao.findAll());
         tableFilm.setItems(films);
-        films.add(new Film("Titanic", "07/12/2003"));
-        films.add(new Film("Fast and furious", "07/12/1809"));
-        films.add(new Film("le voyageur du passer", "07/12/1909"));
         colTitle.setCellValueFactory(celldata -> new SimpleStringProperty(celldata.getValue().getTitre()));
     }
 

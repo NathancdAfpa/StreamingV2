@@ -1,11 +1,12 @@
 package fr.afpa.model;
 
-public class Decouverte {
+public class Decouverte extends Compte {
 
     private int playlist;
     private boolean filmRegarde;
 
     public Decouverte(int playlist, boolean filmRegarde) {
+        super();
         this.playlist = playlist;
         this.filmRegarde = filmRegarde;
     }
@@ -26,12 +27,4 @@ public class Decouverte {
         this.filmRegarde = filmRegarde;
     }
 
-/*    public int countFilm(int count){
-        int compteur = 0;
-        compteur++;
-        if(compteur == 1){
-
-        }
-        return
-    }*/
 }
