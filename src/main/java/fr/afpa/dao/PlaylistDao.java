@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistDao extends Dao<Playlist> {
+
+    MoviesDao moviesDao = new MoviesDao();
     private final Connection connection;
 
     public PlaylistDao(){
@@ -20,7 +22,7 @@ public class PlaylistDao extends Dao<Playlist> {
     }
 
     public void addMoviesPlaylist(int moviesId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("insert into playlist(moviesId, userId) values (?,?);");
+        PreparedStatement statement = connection.prepareStatement("insert into playlist(movieId, userId) values (?,?);");
         int idUser = GetUserId.getInstance().getId();
         System.out.println(idUser);
         statement.setInt(1 , moviesId);
@@ -46,6 +48,26 @@ public class PlaylistDao extends Dao<Playlist> {
             throw new RuntimeException(e);
         }
         return playlists;
+    }
+
+    public ArrayList<Film> getFilmForUser(int userId) {
+
+        ArrayList<Film> movies = new ArrayList<>();
+
+        try (
+                PreparedStatement statement = connection.prepareStatement("SELECT * FROM playlist WHERE userId = ?;    ")) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int movieId = resultSet.getInt("movieId");
+                Film movie = moviesDao.getMovieById(movieId);
+                movies.add(movie);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return movies;
     }
 
     @Override

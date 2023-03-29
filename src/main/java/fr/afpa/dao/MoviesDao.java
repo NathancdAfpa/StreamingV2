@@ -13,13 +13,13 @@ public class MoviesDao extends Dao<Film> {
 
     private final Connection connection;
 
-    public MoviesDao(){
+    public MoviesDao() {
         connection = ConnectionBdd.getInstance().connection;
     }
 
-    public void addMovies(String title, Date publiDate){
-        try{
-            PreparedStatement statement = connection.prepareStatement("insert into movies (title, publiDate) values (?,?)");
+    public void addMovies(String title, Date publiDate) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("insert into movie (title, publiDate) values (?,?)");
             statement.setString(1, title);
             statement.setDate(2, publiDate);
             statement.executeUpdate();
@@ -36,10 +36,10 @@ public class MoviesDao extends Dao<Film> {
     @Override
     public ArrayList<Film> findAll() {
         ArrayList<Film> films = new ArrayList<>();
-        try{
+        try {
             Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("select * from movies");
-            while (result.next()){
+            ResultSet result = statement.executeQuery("select * from movie");
+            while (result.next()) {
                 String title = result.getString("title");
                 Date publiDate = result.getDate("publiDate");
                 int id = result.getInt("id");
@@ -53,6 +53,21 @@ public class MoviesDao extends Dao<Film> {
         return films;
 
     }
+
+    public Film getMovieById(int movieId) throws SQLException {
+        String query = "SELECT * FROM movie WHERE id = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1, movieId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            String title = resultSet.getString("title");
+            return new Film(title);
+        } else {
+            return null;
+        }
+    }
+
 
 /*    public ArrayList<Film> findById(ArrayList<Integer> moviesId){
 
@@ -73,6 +88,4 @@ public class MoviesDao extends Dao<Film> {
         }
         return playlists;
     }*/
-
-
 }

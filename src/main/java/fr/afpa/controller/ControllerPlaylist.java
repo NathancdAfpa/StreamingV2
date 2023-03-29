@@ -28,7 +28,6 @@ public class ControllerPlaylist {
 
     @FXML
     private TableView<Film> tableVPlaylist;
-    ArrayList<Integer> playlists = new ArrayList<>();
     private final ObservableList<Film> films = FXCollections.observableArrayList();
     private final ObservableList<Film> movies = FXCollections.observableArrayList();
     @FXML
@@ -75,11 +74,14 @@ public class ControllerPlaylist {
     //afficher des film au lancement de la vue
     @FXML
     public void initialize() {
+        int idUser = GetUserId.getInstance().getId();
         films.addAll(moviesDao.findAll());
         tableFilm.setItems(films);
         colTitle.setCellValueFactory(celldata -> new SimpleStringProperty(celldata.getValue().getTitre()));
 
-        System.out.println(moviesDao.findById(playlists));
+        movies.addAll(playlistDao.getFilmForUser(idUser));
+        tableVPlaylist.setItems(movies);
+        colPlaylist.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitre()));
     }
 
     //suprimer les film séléctioner de la playlist utilisateur
