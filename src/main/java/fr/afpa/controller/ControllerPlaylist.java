@@ -2,8 +2,11 @@ package fr.afpa.controller;
 
 import fr.afpa.dao.Dao;
 import fr.afpa.dao.MoviesDao;
+import fr.afpa.dao.PlaylistDao;
 import fr.afpa.model.Film;
 import fr.afpa.application.HelloApplication;
+import fr.afpa.model.GetUserId;
+import fr.afpa.model.Playlist;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +18,8 @@ import javafx.stage.Stage;
 import javafx.scene.control.TableView;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 //controller de la vue Playlist
 public class ControllerPlaylist {
@@ -23,6 +28,7 @@ public class ControllerPlaylist {
 
     @FXML
     private TableView<Film> tableVPlaylist;
+    ArrayList<Integer> playlists = new ArrayList<>();
     private final ObservableList<Film> films = FXCollections.observableArrayList();
     private final ObservableList<Film> movies = FXCollections.observableArrayList();
     @FXML
@@ -32,6 +38,7 @@ public class ControllerPlaylist {
     @FXML
     private Button btnAddMoviesBdd;
     MoviesDao moviesDao = new MoviesDao();
+    PlaylistDao playlistDao = new PlaylistDao();
 
     // création de la methode pour aller a la page d'accueil
     @FXML
@@ -53,14 +60,14 @@ public class ControllerPlaylist {
 
     //methode pour ajouter des film a la playlist de l'utilisateur
     @FXML
-    public void addFilmPlaylist() {
+    public void addFilmPlaylist() throws SQLException {
         tableVPlaylist.setItems(movies);
         Film selectedFilm  = tableFilm.getSelectionModel().getSelectedItem();
 
         //si un film est déja dans le tableau, ne pas le rajoutait
         if (!tableVPlaylist.getItems().contains(selectedFilm)) {
             tableVPlaylist.getItems().add(selectedFilm);
-            System.out.println(selectedFilm.getId());
+            playlistDao.addMoviesPlaylist(selectedFilm.getId());
         }
         colPlaylist.setCellValueFactory(celldata -> new SimpleStringProperty(celldata.getValue().getTitre()));
     }
@@ -71,6 +78,8 @@ public class ControllerPlaylist {
         films.addAll(moviesDao.findAll());
         tableFilm.setItems(films);
         colTitle.setCellValueFactory(celldata -> new SimpleStringProperty(celldata.getValue().getTitre()));
+
+        System.out.println(moviesDao.findById(playlists));
     }
 
     //suprimer les film séléctioner de la playlist utilisateur

@@ -2,6 +2,7 @@ package fr.afpa.dao;
 
 import fr.afpa.model.ConnectionBdd;
 import fr.afpa.model.Film;
+import fr.afpa.model.Playlist;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,26 +15,6 @@ public class MoviesDao extends Dao<Film> {
 
     public MoviesDao(){
         connection = ConnectionBdd.getInstance().connection;
-    }
-
-    public List<Film> findByUserID(int userId){
-        List<Film> films = new ArrayList<>();
-
-        try{
-            PreparedStatement movieStatement = connection.prepareStatement("select * from film where user_id = ?");
-            movieStatement.setInt(1, userId);
-
-            ResultSet result = movieStatement.executeQuery();
-            while (result.next()){
-                Film film = new Film();
-                film.setTitre(result.getString("titre"));
-                film.setDateSortie(result.getDate("dateDeSortie"));
-                films.add(film);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return films;
     }
 
     public void addMovies(String title, Date publiDate){
@@ -72,6 +53,26 @@ public class MoviesDao extends Dao<Film> {
         return films;
 
     }
+
+/*    public ArrayList<Film> findById(ArrayList<Integer> moviesId){
+
+        int listLengt = moviesId.size();
+        ArrayList<Playlist> playlists = new ArrayList<>();
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from movies where id in (" + listLengt + ")");
+            while(resultSet.next()){
+                int movieId = resultSet.getInt("id");
+
+                Playlist playlist = new Playlist(movieId);
+                playlists.add(playlist);
+                System.out.println(playlist);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return playlists;
+    }*/
 
 
 }
