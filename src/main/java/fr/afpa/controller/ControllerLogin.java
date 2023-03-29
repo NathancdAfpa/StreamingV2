@@ -22,6 +22,11 @@ public class ControllerLogin {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     UsersDao usersDao = new UsersDao();
 
+    public void initialize(){
+        tfMail.setText("kelvin@bing.fr");
+        tfMdp.setText("azerty");
+    }
+
     public void login() throws IOException, SQLException {
 
         String mail = tfMail.getText();
@@ -51,6 +56,7 @@ public class ControllerLogin {
     private void goToSign() throws IOException {
         if(btnSign.isSelected()){
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/view/signIn.fxml"));
+
             Scene scene = new Scene(fxmlLoader.load());
             HelloApplication.stage.setScene(scene);
             HelloApplication.stage.setTitle("Inscription");

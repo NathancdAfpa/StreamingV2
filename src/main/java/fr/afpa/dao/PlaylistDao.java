@@ -50,7 +50,7 @@ public class PlaylistDao extends Dao<Playlist> {
         return playlists;
     }
 
-    public ArrayList<Film> getFilmForUser(int userId) {
+    public ArrayList<Film> getFilmsForUser(int userId) {
 
         ArrayList<Film> movies = new ArrayList<>();
 

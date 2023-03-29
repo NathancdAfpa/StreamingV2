@@ -30,8 +30,25 @@ public class MoviesDao extends Dao<Film> {
 
     @Override
     public Film find(int id) {
+        try{
+            PreparedStatement statement = connection.prepareStatement("select * from movie where id = ? ");
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            if(resultSet.next()) {
+                Film film = new Film();
+                film.setId(resultSet.getInt("id"));
+                film.setTitre(resultSet.getString("title"));
+                film.setDateSortie(resultSet.getDate("publiDate"));
+
+                return film;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
+
 
     @Override
     public ArrayList<Film> findAll() {
@@ -65,6 +82,18 @@ public class MoviesDao extends Dao<Film> {
             return new Film(title);
         } else {
             return null;
+        }
+    }
+
+    public void updateMovie(int moviesId, String title, Date publiDate ){
+        try {
+            PreparedStatement statement = connection.prepareStatement("update movie set title = ?, publiDate = ? where id = ?");
+            statement.setString(1, title);
+            statement.setDate(2, publiDate);
+            statement.setInt(3, moviesId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

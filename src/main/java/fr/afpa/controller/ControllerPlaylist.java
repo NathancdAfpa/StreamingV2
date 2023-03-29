@@ -25,7 +25,6 @@ import java.util.ArrayList;
 public class ControllerPlaylist {
     @FXML
     private TableView<Film> tableFilm;
-
     @FXML
     private TableView<Film> tableVPlaylist;
     private final ObservableList<Film> films = FXCollections.observableArrayList();
@@ -36,6 +35,8 @@ public class ControllerPlaylist {
     private TableColumn<Film, String> colPlaylist = null;
     @FXML
     private Button btnAddMoviesBdd;
+    @FXML
+    private Button btnUpdate;
     MoviesDao moviesDao = new MoviesDao();
     PlaylistDao playlistDao = new PlaylistDao();
 
@@ -57,13 +58,11 @@ public class ControllerPlaylist {
         stage.setScene(scene);
     }
 
-    //methode pour ajouter des film a la playlist de l'utilisateur
     @FXML
     public void addFilmPlaylist() throws SQLException {
         tableVPlaylist.setItems(movies);
         Film selectedFilm  = tableFilm.getSelectionModel().getSelectedItem();
 
-        //si un film est déja dans le tableau, ne pas le rajoutait
         if (!tableVPlaylist.getItems().contains(selectedFilm)) {
             tableVPlaylist.getItems().add(selectedFilm);
             playlistDao.addMoviesPlaylist(selectedFilm.getId());
@@ -71,7 +70,6 @@ public class ControllerPlaylist {
         colPlaylist.setCellValueFactory(celldata -> new SimpleStringProperty(celldata.getValue().getTitre()));
     }
 
-    //afficher des film au lancement de la vue
     @FXML
     public void initialize() {
         int idUser = GetUserId.getInstance().getId();
@@ -79,12 +77,21 @@ public class ControllerPlaylist {
         tableFilm.setItems(films);
         colTitle.setCellValueFactory(celldata -> new SimpleStringProperty(celldata.getValue().getTitre()));
 
-        movies.addAll(playlistDao.getFilmForUser(idUser));
+        movies.addAll(playlistDao.getFilmsForUser(idUser));
         tableVPlaylist.setItems(movies);
         colPlaylist.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitre()));
     }
-
-    //suprimer les film séléctioner de la playlist utilisateur
+    @FXML
+    public void onModifyMovie() throws IOException {
+        Film selectedFilm = tableFilm.getSelectionModel().getSelectedItem();
+        Stage stage = HelloApplication.stage;
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/view/ajoutFilm.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        ControllerAddMovies controllerAddMovies = fxmlLoader.getController();
+        controllerAddMovies.loadMovie(selectedFilm.getId());
+        stage.setTitle("Update movies");
+        stage.setScene(scene);
+    }
     @FXML
     public void delete(){
         Film selectedFilm = tableVPlaylist.getSelectionModel().getSelectedItem();
